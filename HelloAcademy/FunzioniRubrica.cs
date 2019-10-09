@@ -12,6 +12,9 @@ namespace HelloAcademy
             Console.Write("Quante persone vuoi inserire (da 1 a 9)? ");
             int totalPersons = LeggiNumeroInteroDaConsole(1, 9);
 
+            //Richiamo la funzione che genera la rubrica
+            // => TODO var rubrica = ComposizioneRubrica(totalPersons);
+
             //Dimensionamento della rubrica
             Person[] rubrica = new Person[totalPersons];
 
@@ -25,6 +28,11 @@ namespace HelloAcademy
 
             //9) Itero la rubrica e stampo a video (con for) tutte le persone
             StampaRubrica(rubrica);
+
+            //Richiedo di inserire un altro elemento in rubrica
+            //=> TODO 
+
+            //STampo nuovamente la rubrica
 
             //Cerimonia finale
             ConfermaUscita();
