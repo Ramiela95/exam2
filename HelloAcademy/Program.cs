@@ -8,7 +8,9 @@ namespace HelloAcademy
         {
             //FunzioniMatematiche.RecuperaDivisioneEDividendoEDividi();
 
-            FunzioniRubrica.InserisciPersoneEMostraRubrica();
+            //FunzioniRubrica.InserisciPersoneEMostraRubrica();
+
+            FunzioniRubrica.InserisciNumeroArbitrarioPersoneInRubrica();
 
 
 

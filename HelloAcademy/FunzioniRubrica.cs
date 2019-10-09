@@ -6,6 +6,28 @@ namespace HelloAcademy
 {
     public static class FunzioniRubrica
     {
+        public static void InserisciNumeroArbitrarioPersoneInRubrica() 
+        {
+            //1) Richiedo il numero di persone da inserire
+            Console.WriteLine("TODO");
+
+            //2) Validazione del valore immesso e conversione in numero
+
+            //3) Se il numero è minore o uguale a zero, o maggiore di 10 esco
+
+            //4) Itero per il numero di persone richiesto
+
+            //5) Richiedo il nome e cognome della persona
+
+            //6) Creo oggetto Person da inserire in rubrica
+
+            //7) Aggiungo persona a rubrica
+
+            //8) Se ho inserito tutte le persone termino il ciclo
+
+            //9) Itero la rubrica e stampo a video (con for) tutte le persone
+        }
+
         public static void InserisciPersoneEMostraRubrica()
         {
             //Dimensiono array per la rubrica
