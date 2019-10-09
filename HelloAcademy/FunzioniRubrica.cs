@@ -75,6 +75,12 @@ namespace HelloAcademy
                 index = index + 1;
             }
 
+            Console.WriteLine("Iterazione rubrica (foreach):");
+            foreach (Person current in rubrica) 
+            {
+                Console.WriteLine(current.FirstName + ", " + current.LastName);
+            }
+
         }
     }
 }
