@@ -9,23 +9,55 @@ namespace HelloAcademy
         public static void InserisciNumeroArbitrarioPersoneInRubrica() 
         {
             //1) Richiedo il numero di persone da inserire
-            Console.WriteLine("TODO");
+            Console.Write("Quante persone vuoi inserire (da 1 a 9)? ");
+            string totalPersonsString = Console.ReadLine();
 
             //2) Validazione del valore immesso e conversione in numero
+            int totalPersons = int.Parse(totalPersonsString);
 
             //3) Se il numero è minore o uguale a zero, o maggiore di 10 esco
+            if (totalPersons < 1 || totalPersons >= 10) 
+            {
+                //Messaggio utente ed uscita
+                Console.WriteLine("Il numero di persone inseribili deve essere da 1 a 9");
+                Console.Write("Premi un pulsante per uscire");
+                Console.ReadKey();
+                return;
+            }
+
+            //Dimensionamento della rubrica
+            Person[] rubrica = new Person[totalPersons];
 
             //4) Itero per il numero di persone richiesto
+            for (int index = 0; index < totalPersons; index++) 
+            {
+                //5) Richiedo il nome e cognome della persona
+                Console.Write("nome: ");
+                var nome = Console.ReadLine();
+                Console.Write("cognome: ");
+                var cognome = Console.ReadLine();
 
-            //5) Richiedo il nome e cognome della persona
+                //6) Creo oggetto Person da inserire in rubrica
+                Person person = new Person 
+                {
+                    FirstName = nome, 
+                    LastName = cognome
+                };
 
-            //6) Creo oggetto Person da inserire in rubrica
+                //7) Aggiungo persona a rubrica
+                rubrica[index] = person;
 
-            //7) Aggiungo persona a rubrica
-
-            //8) Se ho inserito tutte le persone termino il ciclo
+                //8) Se ho inserito tutte le persone termino il ciclo
+            }
 
             //9) Itero la rubrica e stampo a video (con for) tutte le persone
+            Console.WriteLine("*** Visualizzazione contenuto rubrica***");
+            for (var index = 0; index < rubrica.Length; index++)
+                Console.WriteLine($"{rubrica[index].FirstName}, {rubrica[index].LastName}");
+
+            //Cerimonia finale
+            Console.Write("Premi un pulsante per uscire");
+            Console.ReadKey();
         }
 
         public static void InserisciPersoneEMostraRubrica()
