@@ -10,7 +10,7 @@ namespace HelloAcademy
         public static void InserisciNumeroArbitrarioPersoneInRubrica()
         {
             //1) Richiedo il numero di persone da inserire
-            Console.Write("Quante persone vuoi inserire (da 1 a 9)? ");
+            Console.WriteLine("Quante persone vuoi inserire (da 1 a 9)? ");
             int totalPersons = ConsoleUtils.LeggiNumeroInteroDaConsole(1, 9);
 
             //Richiamo la funzione che genera la rubrica
