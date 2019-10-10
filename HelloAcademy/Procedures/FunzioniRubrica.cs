@@ -1,4 +1,5 @@
-﻿using HelloAcademy.Utils;
+﻿using HelloAcademy.Procedures;
+using HelloAcademy.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,43 +18,74 @@ namespace HelloAcademy
             // => TODO var rubrica = ComposizioneRubrica(totalPersons);
 
             //Dimensionamento della rubrica
-            Person[] rubrica = new Person[totalPersons];
+            List<Person> rubrica = CaricaRubricaDaDatabase();
 
             //4) Itero per il numero di persone richiesto
             for (int index = 0; index < totalPersons; index++)
             {
                 //Richiamo una funzione a cui passo la rubrica
                 //e l'indice corrente e questa mi aggiunge la persona
-                AggiungiPersonaARubricaInPosizione(rubrica, index);
+                AggiungiPersonaARubricaInPosizione(rubrica);
             }
 
             //9) Itero la rubrica e stampo a video (con for) tutte le persone
             StampaRubrica(rubrica);
-
-            //Richiedo di inserire un altro elemento in rubrica
-            //=> TODO 
-
-            //STampo nuovamente la rubrica
-
+           
             //Cerimonia finale
             ConsoleUtils.ConfermaUscita();
         }
 
-        
+        private static List<Person> CaricaRubricaDaDatabase()
+        {
+            //Mi assicuro che esista la folder di archivio
+            var archiveFolder = FunzioniFileSystem.AssicuratiCheEsistaCartellaDiArchivio();
 
-       
+            //Tento di farmi dare le righe contenute nel database (se esiste)
+            string[] tutteLeRigheDelDatabase = FunzioniFileSystem.OttieniRigheDaDatabase(archiveFolder);
 
-        private static void StampaRubrica(Person[] rubrica)
+            List<Person> persone = new List<Person>();
+
+            //Itero per tutti gli elementi dell'array
+            foreach (var currentRow in tutteLeRigheDelDatabase) 
+            {
+                //Individuo la posizione della ","
+                int virgolaPosition = currentRow.IndexOf(",");
+
+                //Se non viene trovata la ",", passiamo al prossimo elemento
+                if (virgolaPosition < 0)
+                    continue;
+
+                //Prendo come nome la stringa prima della virgola
+                string nome = currentRow.Substring(0, virgolaPosition);
+
+                //Prendo quello che ho dopo la virgola come cognome
+                string cognome = currentRow.Substring(virgolaPosition + 1);
+
+                //Creazione dell'oggetto persona
+                Person currentPerson = new Person
+                {
+                    FirstName = nome,
+                    LastName = cognome
+                };
+
+                //Aggiungo la persona alla lista
+                persone.Add(currentPerson);
+            }
+
+            return persone;
+        }
+
+        private static void StampaRubrica(List<Person> rubrica)
         {
             Console.WriteLine("*** Visualizzazione contenuto rubrica***");
-            for (var index = 0; index < rubrica.Length; index++)
+            for (var index = 0; index < rubrica.Count; index++)
             {
                 Console.WriteLine($" => {rubrica[index].FirstName}, {rubrica[index].LastName}");
                 //Console.WriteLine(" => " + rubrica[index].FirstName + ", " + rubrica[index].LastName);
             }
         }
 
-        private static void AggiungiPersonaARubricaInPosizione(Person[] rubrica, int index)
+        private static void AggiungiPersonaARubricaInPosizione(List<Person> rubrica)
         {
             //5) Richiedo il nome e cognome della persona
             Console.Write("nome: ");
@@ -69,10 +101,32 @@ namespace HelloAcademy
             };
 
             //7) Aggiungo persona a rubrica
-            rubrica[index] = person;
+            rubrica.Add(person);
+
+            //Aggiungo la persona al file database
+            SalvaPersonaInFile(person);
 
             //8) Se ho inserito tutte le persone termino il ciclo
         }
+
+        private static void SalvaPersonaInFile(Person person)
+        {
+            //Assicuriamoci che esista la folder per il file di archivio
+            var archiveFolder = FunzioniFileSystem.AssicuratiCheEsistaCartellaDiArchivio();
+            //** Arrivo a questo punto e sono sicuro al 100% che la cartella dove
+            //** sarà conservato il file database esiste: ne ottengo il percorso
+
+            string datiDellaPersonaInFormatoStringa = ConvertiPersonaInStringa(person);
+
+            //Aggiungi testo a file
+            FunzioniFileSystem.AggiungiTestoAFileDatabase(datiDellaPersonaInFormatoStringa, archiveFolder);
+        }
+
+        private static string ConvertiPersonaInStringa(Person person)
+        {
+            return $"{person.FirstName},{person.LastName}";
+        }
+
 
 
         //******************************************************************
