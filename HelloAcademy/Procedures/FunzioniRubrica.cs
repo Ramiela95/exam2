@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HelloAcademy.Utils;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,7 +11,7 @@ namespace HelloAcademy
         {
             //1) Richiedo il numero di persone da inserire
             Console.Write("Quante persone vuoi inserire (da 1 a 9)? ");
-            int totalPersons = LeggiNumeroInteroDaConsole(1, 9);
+            int totalPersons = ConsoleUtils.LeggiNumeroInteroDaConsole(1, 9);
 
             //Richiamo la funzione che genera la rubrica
             // => TODO var rubrica = ComposizioneRubrica(totalPersons);
@@ -35,60 +36,12 @@ namespace HelloAcademy
             //STampo nuovamente la rubrica
 
             //Cerimonia finale
-            ConfermaUscita();
+            ConsoleUtils.ConfermaUscita();
         }
 
-        private static int LeggiNumeroInteroDaConsole(int minValue, int maxValue)
-        {
-            //Leggo il valore stringa da console
-            string valoreString = Console.ReadLine();
-            int valoreIntero = 0;
+        
 
-            //Predisposizione al fallimento
-            bool isInteger = false;
-            bool isInRange = false;
-
-            do
-            {
-                try
-                {
-                    //Validazione e parsing del valore
-                    valoreIntero = int.Parse(valoreString);
-                    isInteger = true;
-
-                    //Verifico se è nel range
-                    if (valoreIntero >= minValue && valoreIntero <= maxValue) 
-                    {
-                        //imposto il flag IsInRange
-                        isInRange = true;
-                    }
-                }
-                catch (Exception exc)
-                {
-                    //Messaggio di errore
-                    Console.WriteLine("Attenzione! Il valore immesso non è valido!");
-                    Console.Write("Inseriscilo di nuovo: ");
-
-                    //RIchiesta nuovo valore
-                    valoreString = Console.ReadLine();
-
-                    //Ripristino condizioni di predisposizione fallimento iniziali
-                    valoreIntero = 0;
-                    isInteger = false;                    
-                    isInRange = false;
-                }
-            }
-            while (isInteger == false || isInRange == false);
-
-            //Ritorno il valore intero
-            return valoreIntero;
-        }
-
-        private static void ConfermaUscita()
-        {
-            Console.Write("Premi un pulsante per uscire");
-            Console.ReadKey();
-        }
+       
 
         private static void StampaRubrica(Person[] rubrica)
         {

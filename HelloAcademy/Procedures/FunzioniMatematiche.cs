@@ -37,8 +37,7 @@ namespace HelloAcademy
                 Calculator istanza = new Calculator();
 
                 //2) RIchiamo il metodo di divisione
-                double risultatoDivisione;
-                risultatoDivisione = istanza.Divide(firstAsInteger, secondAsInteger);
+                var risultatoDivisione = istanza.Divide(firstAsInteger, secondAsInteger);
 
                 //Mostro risultato a video
                 Console.WriteLine("Il risultato è :" + risultatoDivisione);
