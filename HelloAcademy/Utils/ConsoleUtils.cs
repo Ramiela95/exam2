@@ -48,7 +48,7 @@ namespace HelloAcademy.Utils
                 catch (Exception exc)
                 {
                     //Messaggio di errore
-                    Console.WriteLine("Attenzione! Il valore immesso è un numero!");
+                    Console.WriteLine("Attenzione! Il valore immesso NON è un numero!");
                     
                     //Ripristino condizioni di predisposizione fallimento iniziali
                     valoreIntero = 0;
