@@ -25,7 +25,6 @@ namespace HelloAcademy
             Console.WriteLine("* 4 - FileSystem");
             Console.WriteLine("* 5 - Array");
             Console.WriteLine("* 0 - Exit");
-            Console.Write("* Selezione: ");
             var selezione = ConsoleUtils.LeggiNumeroInteroDaConsole(1, 5);
 
             //Selezione della funzione da avviare
@@ -53,20 +52,6 @@ namespace HelloAcademy
                     Console.WriteLine("Selezione non valida");
                     break;
             }
-
-            //3) Se premo 1, parte "RecuperaDivisioneEDividendoEDividi"
-
-            //4) Se premo 2, parte "InserisciPersoneEMostraRubrica"
-
-            //5) Se premo 3, parte "InserisciNumeroArbitrarioPersoneInRubrica"
-
-
-            //FunzioniMatematiche.RecuperaDivisioneEDividendoEDividi();
-
-            //FunzioniRubrica.InserisciPersoneEMostraRubrica();
-
-            //FunzioniRubrica.InserisciNumeroArbitrarioPersoneInRubrica();
-
         }
     }    
 }
