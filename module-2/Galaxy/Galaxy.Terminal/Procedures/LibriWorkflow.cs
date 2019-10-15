@@ -67,6 +67,14 @@ namespace Galaxy.Terminal.Procedures
                 Console.WriteLine($"Lettura: {currentLibro.Titolo} (ID:{currentLibro.Id})");
             Console.WriteLine("");
 
+            //Cerchiamo un libro con "esempio" nel titolo
+            Console.WriteLine("Caricamento dei soli libri con 'esempio' nel titolo...");
+            libriInArchivio = manager.Carica("esempio");
+            Console.WriteLine($"Trovati {libriInArchivio.Count} libri in archivio con 'esempio'...");
+            foreach (var currentLibro in libriInArchivio)
+                Console.WriteLine($"Lettura: {currentLibro.Titolo} (ID:{currentLibro.Id})");
+            Console.WriteLine("");
+
             //Cancellazione del genere => "D" di CRUD
             Console.WriteLine("Cancellazione di un libro esistente...");
             manager.Cancella(nuovoLibro);

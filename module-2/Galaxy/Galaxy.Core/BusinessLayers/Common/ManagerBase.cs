@@ -10,9 +10,13 @@ namespace Galaxy.Core.BusinessLayers.Common
     public abstract class ManagerBase<TEntity>
         where TEntity: EntitaMonitorabile
     {
-        public abstract string GetNomeFileDatabase();
+        protected abstract string GetNomeFileDatabase();
 
-        public abstract string ConvertiEntityInStringa(TEntity entityDaConvertire);
+        protected abstract string ConvertiEntityInStringa(TEntity entityDaConvertire);
+
+        protected abstract TEntity ConvertSegmentiInEntity(string[] segments);
+
+        protected abstract void RemapNuoviValoriSuEntityInLista(TEntity entitySorgente, TEntity entityDestinazione);
 
         public void Crea(TEntity entityDaCreare) 
         {
@@ -80,33 +84,6 @@ namespace Galaxy.Core.BusinessLayers.Common
             //Arrivato qui abbiamo la lista dati perfettamente aggiornata
             Salva(tuttiIDati);
         }
-
-        private void Salva(List<TEntity> tutteLeEntityDaSalvare)
-        {
-            //Definizione della lista di stringhe
-            List<string> stringhe = new List<string>();
-
-            //Scorro tutte le entità passate come parametro
-            foreach (var currentEntity in tutteLeEntityDaSalvare) 
-            {
-                //Conversione a stringa
-                var targetString = ConvertiEntityInStringa(currentEntity);
-
-                //Aggiunta della stringa in lista
-                stringhe.Add(targetString);
-            }
-
-            //Genero il percorso del database
-            var dbFile = GetNomeFileDatabase();
-            var fileDb = DatabaseUtils
-                .GeneraPercorsoFileDatabase(dbFile);
-
-            //Scrivo tutte le righe sul file
-            var arrayDiStringhe = stringhe.ToArray();
-            File.WriteAllLines(fileDb, arrayDiStringhe);
-        }
-
-        public abstract void RemapNuoviValoriSuEntityInLista(TEntity entitySorgente, TEntity entityDestinazione);
 
         public void Cancella(TEntity entityDaCancellare)
         {
@@ -181,6 +158,29 @@ namespace Galaxy.Core.BusinessLayers.Common
             return listaUscita;
         }
 
-        public abstract TEntity ConvertSegmentiInEntity(string[] segments);
+        private void Salva(List<TEntity> tutteLeEntityDaSalvare)
+        {
+            //Definizione della lista di stringhe
+            List<string> stringhe = new List<string>();
+
+            //Scorro tutte le entità passate come parametro
+            foreach (var currentEntity in tutteLeEntityDaSalvare)
+            {
+                //Conversione a stringa
+                var targetString = ConvertiEntityInStringa(currentEntity);
+
+                //Aggiunta della stringa in lista
+                stringhe.Add(targetString);
+            }
+
+            //Genero il percorso del database
+            var dbFile = GetNomeFileDatabase();
+            var fileDb = DatabaseUtils
+                .GeneraPercorsoFileDatabase(dbFile);
+
+            //Scrivo tutte le righe sul file
+            var arrayDiStringhe = stringhe.ToArray();
+            File.WriteAllLines(fileDb, arrayDiStringhe);
+        }
     }
 }

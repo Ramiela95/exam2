@@ -1,19 +1,20 @@
 ﻿using Galaxy.Core.BusinessLayers.Common;
 using Galaxy.Core.Entities;
 using System;
+using System.Collections.Generic;
 
 namespace Galaxy.Core.BusinessLayers
 {
     public class LibroManager: ManagerBase<Libro>
     {
-        const string NomeFileDatabaseLibri = "libri.txt";  
+        const string NomeFileDatabaseLibri = "libri.txt";
 
-        public override string GetNomeFileDatabase()
+        protected override string GetNomeFileDatabase()
         {
             return NomeFileDatabaseLibri;
         }
 
-        public override string ConvertiEntityInStringa(Libro entityDaConvertire)
+        protected override string ConvertiEntityInStringa(Libro entityDaConvertire)
         {
             //segmenti[0] => "Id"
             //segmenti[1] => "Codice"
@@ -41,7 +42,7 @@ namespace Galaxy.Core.BusinessLayers
             return libroStringa;
         }
 
-        public override Libro ConvertSegmentiInEntity(string[] segments)
+        protected override Libro ConvertSegmentiInEntity(string[] segments)
         {
 
             var libro = new Libro
@@ -65,7 +66,7 @@ namespace Galaxy.Core.BusinessLayers
             return libro;
         }
 
-        public override void RemapNuoviValoriSuEntityInLista(
+        protected override void RemapNuoviValoriSuEntityInLista(
             Libro entitySorgente, Libro entityDestinazione)
         {
             entityDestinazione.Titolo = entitySorgente.Titolo;
@@ -80,6 +81,33 @@ namespace Galaxy.Core.BusinessLayers
             //nella funzione base perchè è in grado di manipolare i campi in questione
             // => entityDestinazione.Timestamp = entitySorgente.Timestamp;
             // => entityDestinazione.UtenteCreatore = entitySorgente.UtenteCreatore;
+        }
+
+        public List<Libro> Carica(string testoDaCercareNelTitolo)
+        {
+            //Uso il metodo base per ottenere tutti i libri
+            List<Libro> tuttiILibri = base.Carica();
+            List<Libro> libriCorrispondentiAlCriterioDiRicerca = new List<Libro>();
+
+            //Scorro tutti i libri
+            foreach (Libro currentLibro in tuttiILibri) 
+            {
+                //Se il libro corrente contiene nel Titolo il 
+                //testo specificato, aggiungo il libro "libriCorrispondentiAlCriterioDiRicerca"
+
+                //Recupero l'indice del testo ricercato nel titolo
+                var indiceTesto = currentLibro.Titolo.IndexOf(testoDaCercareNelTitolo);
+
+                //Se l'indice è >= 0
+                if (indiceTesto < 0)
+                    continue;
+
+                //Aggiungo l'elemento in uscita
+                libriCorrispondentiAlCriterioDiRicerca.Add(currentLibro);
+            }
+
+            //Ritorno la lista di quelli corrispondenti
+            return libriCorrispondentiAlCriterioDiRicerca;
         }
     }
 }

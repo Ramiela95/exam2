@@ -12,12 +12,12 @@ namespace Galaxy.Core.BusinessLayers
     {
         const string NomeFileDatabaseGeneri = "generi.txt";
 
-        public override string GetNomeFileDatabase()
+        protected override string GetNomeFileDatabase()
         {
             return NomeFileDatabaseGeneri;
         }
 
-        public override string ConvertiEntityInStringa(Genere entityDaConvertire)
+        protected override string ConvertiEntityInStringa(Genere entityDaConvertire)
         {
             //Conversione del genere a string
             string genereStringa =
@@ -29,13 +29,13 @@ namespace Galaxy.Core.BusinessLayers
             return genereStringa;
         }
 
-        public override void RemapNuoviValoriSuEntityInLista(Genere entitySorgente, Genere entityDestinazione)
+        protected override void RemapNuoviValoriSuEntityInLista(Genere entitySorgente, Genere entityDestinazione)
         {
             entityDestinazione.Nome = entitySorgente.Nome;
             entityDestinazione.Descrizione = entitySorgente.Descrizione;
         }
 
-        public override Genere ConvertSegmentiInEntity(string[] segments)
+        protected override Genere ConvertSegmentiInEntity(string[] segments)
         {
             //segmenti[0] => "Id"
             //segmenti[1] => "Nome"
@@ -53,6 +53,6 @@ namespace Galaxy.Core.BusinessLayers
                 UtenteCreatore = segments[4],
             };
             return genere;
-        }
+        }        
     }
 }
