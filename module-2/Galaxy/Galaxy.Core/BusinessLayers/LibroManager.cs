@@ -8,24 +8,6 @@ namespace Galaxy.Core.BusinessLayers
     {
         const string NomeFileDatabaseLibri = "libri.txt";  
 
-        /// <summary>
-        /// Rappresenta la "U" di CRUD
-        /// </summary>
-        /// <param name="libroDaModificare"></param>
-        public void AggiornaLibro(Libro libroDaModificare)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Rappresenta la "D" di CRUD
-        /// </summary>
-        /// <param name="libroDaCancellare"></param>
-        public void CancellaLibro(Libro libroDaCancellare)
-        {
-            throw new NotImplementedException();
-        }
-
         public override string GetNomeFileDatabase()
         {
             return NomeFileDatabaseLibri;
@@ -81,6 +63,23 @@ namespace Galaxy.Core.BusinessLayers
 
             //Ritorno l'entità generata
             return libro;
+        }
+
+        public override void RemapNuoviValoriSuEntityInLista(
+            Libro entitySorgente, Libro entityDestinazione)
+        {
+            entityDestinazione.Titolo = entitySorgente.Titolo;
+            entityDestinazione.Lingua = entitySorgente.Lingua;
+            entityDestinazione.Prezzo = entitySorgente.Prezzo;
+            entityDestinazione.Anno = entitySorgente.Anno;
+            entityDestinazione.Autore= entitySorgente.Autore;
+            entityDestinazione.Codice= entitySorgente.Codice;
+            entityDestinazione.GenereAppartenenza = entitySorgente.GenereAppartenenza;
+
+            //Posso fare il remapping anche dei campi comuni, ma è meglio farlo 
+            //nella funzione base perchè è in grado di manipolare i campi in questione
+            // => entityDestinazione.Timestamp = entitySorgente.Timestamp;
+            // => entityDestinazione.UtenteCreatore = entitySorgente.UtenteCreatore;
         }
     }
 }

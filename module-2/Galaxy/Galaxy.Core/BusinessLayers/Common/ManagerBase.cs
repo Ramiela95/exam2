@@ -2,6 +2,7 @@
 using Galaxy.Core.Entities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Galaxy.Core.BusinessLayers.Common
@@ -46,14 +47,101 @@ namespace Galaxy.Core.BusinessLayers.Common
             DatabaseUtils.AppendiStringaADatabase(genereStringa, dbFileName);
         }
 
-        
-
         public void Aggiorna(TEntity entityDaModificare)
         {
+            //Validazione dell'input
+            if (entityDaModificare == null)
+                throw new ArgumentNullException(nameof(entityDaModificare));
+
+            //Se non ho "Id" eccezione
+            if (entityDaModificare.Id <= 0)
+                throw new InvalidOperationException("Attenzione! L'oggetto " +
+                    $"non ha il campo 'Id' valorizzato! Prima crearlo!");
+
+            //Carico tutti in memoria
+            List<TEntity> tuttiIDati = Carica();
+
+            //Scorro elenco generi esistenti
+            foreach (var currentGenereInDatabase in tuttiIDati)
+            {
+                //Se l'id non corrisponde, continuo alla prossima iterazione
+                if (currentGenereInDatabase.Id != entityDaModificare.Id)
+                    continue;
+
+                //Rimappo tutti i valori specifici sull'oggetto già 
+                //presente sulla lista caricata dal database
+                RemapNuoviValoriSuEntityInLista(entityDaModificare, currentGenereInDatabase);
+
+                //Cambio i valori dell'oggetto esistente sui campi comuni tra le entità                
+                currentGenereInDatabase.Timestamp = entityDaModificare.Timestamp;
+                currentGenereInDatabase.UtenteCreatore = entityDaModificare.UtenteCreatore;
+            }
+
+            //Arrivato qui abbiamo la lista dati perfettamente aggiornata
+            Salva(tuttiIDati);
         }
+
+        private void Salva(List<TEntity> tutteLeEntityDaSalvare)
+        {
+            //Definizione della lista di stringhe
+            List<string> stringhe = new List<string>();
+
+            //Scorro tutte le entità passate come parametro
+            foreach (var currentEntity in tutteLeEntityDaSalvare) 
+            {
+                //Conversione a stringa
+                var targetString = ConvertiEntityInStringa(currentEntity);
+
+                //Aggiunta della stringa in lista
+                stringhe.Add(targetString);
+            }
+
+            //Genero il percorso del database
+            var dbFile = GetNomeFileDatabase();
+            var fileDb = DatabaseUtils
+                .GeneraPercorsoFileDatabase(dbFile);
+
+            //Scrivo tutte le righe sul file
+            var arrayDiStringhe = stringhe.ToArray();
+            File.WriteAllLines(fileDb, arrayDiStringhe);
+        }
+
+        public abstract void RemapNuoviValoriSuEntityInLista(TEntity entitySorgente, TEntity entityDestinazione);
 
         public void Cancella(TEntity entityDaCancellare)
         {
+            //Validazione dell'input
+            if (entityDaCancellare == null)
+                throw new ArgumentNullException(nameof(entityDaCancellare));
+
+            //Se non ho "Id" eccezione
+            if (entityDaCancellare.Id <= 0)
+                throw new InvalidOperationException("Attenzione! L'oggetto " +
+                    $"non ha il campo 'Id' valorizzato! Prima crearlo!");
+
+            //Carico elementi da database
+            var tutti = Carica();
+
+            //Variabile per elemento da cancellare
+            TEntity entityInListDaCancellare = null;
+
+            //Scorro elementi esistenti
+            foreach (var currentEntity in tutti)
+            {
+                //Se l'id non corrisponde, passa al prossimo
+                if (currentEntity.Id != entityDaCancellare.Id)
+                    continue;
+
+                //Se arrivo qui, ho trovato l'elemento
+                entityInListDaCancellare = currentEntity;
+                break;
+            }
+
+            //Rimuovo da lista
+            tutti.Remove(entityInListDaCancellare);
+
+            //Riscrivo la lista sul database
+            Salva(tutti);
         }
 
         public List<TEntity> Carica() 

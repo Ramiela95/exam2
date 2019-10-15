@@ -26,9 +26,10 @@ namespace Galaxy.Terminal.Procedures
 
             //Creazione di un nuovo libro => "C" di CRUD
             Console.WriteLine("Creazione di un libro...");
+            Random randomGenerator = new Random();
             var nuovoLibro = new Libro 
             { 
-                Titolo = "Le due Torri",
+                Titolo = "Titolo di esempio numero " + randomGenerator.Next(),
                 Anno = 1900, 
                 Autore = "JR Tolkien", 
                 Codice = "ABC", 
@@ -50,7 +51,35 @@ namespace Galaxy.Terminal.Procedures
                 Console.WriteLine($"Lettura: {currentLibro.Titolo} (ID:{currentLibro.Id})");
             Console.WriteLine("");
 
-            //TODO Inserire modifica, elimina
+            //Modifico genere esistente e scrivo sui disco
+            Console.WriteLine("Modifica di un libro esistente...");
+            nuovoLibro.Titolo = nuovoLibro.Titolo + "_" + DateTime.Now.Second;
+            nuovoLibro.Prezzo = nuovoLibro.Prezzo + 10;
+            manager.Aggiorna(nuovoLibro);
+            Console.WriteLine("Il titolo e prezzo cambiati dovrebbero essere sul disco!");
+            Console.WriteLine();
+
+            //Leggiamo i libri dal disco => "R" di CRUD
+            Console.WriteLine("Lettura del database...");
+            libriInArchivio = manager.Carica();
+            Console.WriteLine($"Trovati {libriInArchivio.Count} libri in archivio");
+            foreach (var currentLibro in libriInArchivio)
+                Console.WriteLine($"Lettura: {currentLibro.Titolo} (ID:{currentLibro.Id})");
+            Console.WriteLine("");
+
+            //Cancellazione del genere => "D" di CRUD
+            Console.WriteLine("Cancellazione di un libro esistente...");
+            manager.Cancella(nuovoLibro);
+            Console.WriteLine("Il libro dovrebbe essere stato cancellato dal disco!");
+            Console.WriteLine();
+
+            //Leggiamo i libri dal disco => "R" di CRUD
+            Console.WriteLine("Lettura del database...");
+            libriInArchivio = manager.Carica();
+            Console.WriteLine($"Trovati {libriInArchivio.Count} libri in archivio");
+            foreach (var currentLibro in libriInArchivio)
+                Console.WriteLine($"Lettura: {currentLibro.Titolo} (ID:{currentLibro.Id})");
+            Console.WriteLine("");
         }
     }
 }
