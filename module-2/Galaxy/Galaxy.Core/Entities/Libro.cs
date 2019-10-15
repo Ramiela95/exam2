@@ -7,7 +7,6 @@ namespace Galaxy.Core.Entities
     /// </summary>
     public class Libro: EntitaMonitorabile
     {        
-
         /// <summary>
         /// Codice del libro (es. ISBN)
         /// </summary>
@@ -41,16 +40,6 @@ namespace Galaxy.Core.Entities
         /// <summary>
         /// Riferimento al genere di appartenenza
         /// </summary>
-        public Genere GenereAppartenenza { get; set; }
-
-        /// <summary>
-        /// Data di creazione del libro
-        /// </summary>
-        public DateTime DateCreazione { get; set; }
-
-        /// <summary>
-        /// Utente che ha fisicamente creato il libro nel catalogo
-        /// </summary>
-        public string UtenteCreatore { get; set; }
+        public Genere GenereAppartenenza { get; set; }        
     }
 }

@@ -9,9 +9,11 @@ namespace Galaxy.Core.BusinessLayers
 {
     public class GenereManager
     {
+        const string NomeFileDatabaseGeneri = "generi.txt";
+
         //VINCOLI: 
         //1) il file "database" sarà archivato sotto
-        //   AppDomain.CurrentDomain.BaseDirectory + "/data/generi.txt"
+        //   AppDomain.CurrentDomain.BaseDirectory + "/data/NomeFileDatabaseGeneri"
         //2) L'id primario del record viene assegnato dal manager
         //   sulla base di una logica del tipo [numero-elementi-esistenti] + 1
         //3) La codifica è basata su un record per ogni riga del file
@@ -23,7 +25,8 @@ namespace Galaxy.Core.BusinessLayers
             string[] tutteLeRighe = ConvertiListaGeneriInStringhe(dati);
 
             //Genero il percorso del database
-            var fileDb = DatabaseUtils.GeneraPercorsoFileDatabase();
+            var fileDb = DatabaseUtils
+                .GeneraPercorsoFileDatabase(NomeFileDatabaseGeneri);
 
             //Scrivo tutte le righe sul file
             File.WriteAllLines(fileDb, tutteLeRighe);
@@ -89,13 +92,15 @@ namespace Galaxy.Core.BusinessLayers
             string genereStringa = ConvertiSingoloGenereInStringa(genereDaAggiungere);
 
             //Aggiungi stringa a file database
-            DatabaseUtils.AppendiStringaADatabase(genereStringa);
+            DatabaseUtils.AppendiStringaADatabase(
+                genereStringa, NomeFileDatabaseGeneri);
         }
 
         public List<Genere> CaricaGeneri()
         {
             //Recupero tutte le righe
-            string[] righeInDatabase = DatabaseUtils.LeggiRigheDaDatabase();
+            string[] righeInDatabase = DatabaseUtils
+                .LeggiRigheDaDatabase(NomeFileDatabaseGeneri);
 
             //Predisposizione lista di uscita
             List<Genere> listaUscita = new List<Genere>();

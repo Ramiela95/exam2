@@ -7,24 +7,26 @@ namespace Galaxy.Core.BusinessLayers.Utils
 {
     public static class DatabaseUtils
     {
-        const string NomeCartella = "data";
-        const string NomeFile = "generi.txt";
+        const string NomeCartella = "data";        
 
-        public static void AppendiStringaADatabase(string stringaDaAppendere)
+        public static void AppendiStringaADatabase(
+            string stringaDaAppendere,
+            string dbFileName)
         {
             //Genero il percorso del database
-            var fileDb = GeneraPercorsoFileDatabase();
+            var fileDb = GeneraPercorsoFileDatabase(dbFileName);
 
             //Aggiunta della stringa
             File.AppendAllLines(fileDb,
                 new string[] { stringaDaAppendere });
         }
 
-        public static string GeneraPercorsoFileDatabase()
+        public static string GeneraPercorsoFileDatabase(
+            string dbFileName)
         {
             //Percorso cartella + "NomeFile"
             var cartella = GeneraPercorsoCartellaArchivioSeNonEsiste();
-            var databaseFile = Path.Combine(cartella, NomeFile);
+            var databaseFile = Path.Combine(cartella, dbFileName);
             return databaseFile;
         }
 
@@ -42,10 +44,11 @@ namespace Galaxy.Core.BusinessLayers.Utils
             return folderPath;
         }
 
-        public static string[] LeggiRigheDaDatabase()
+        public static string[] LeggiRigheDaDatabase(
+            string dbFileName)
         {
             //Genero il percorso del database
-            var fileDb = GeneraPercorsoFileDatabase();
+            var fileDb = GeneraPercorsoFileDatabase(dbFileName);
 
             //Se il file non esiste, esco con array vuoto
             if (!File.Exists(fileDb))

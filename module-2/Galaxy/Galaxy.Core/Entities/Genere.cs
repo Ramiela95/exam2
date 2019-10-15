@@ -9,8 +9,6 @@ namespace Galaxy.Core.Entities
     /// </summary>
     public class Genere: EntitaMonitorabile
     {
-        public int Id { get; set; }
-
         /// <summary>
         /// Nome del genere
         /// </summary>
