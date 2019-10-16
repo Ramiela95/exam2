@@ -1,8 +1,6 @@
-﻿using Galaxy.Terminal.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Galaxy.Terminal.Structures
 {
@@ -10,24 +8,27 @@ namespace Galaxy.Terminal.Structures
     {
         public event EventHandler<FileInfo> FileWithSecondExtensionFound;
 
+        public event EventHandler<DirectoryInfo> SearchInDirectoryStarted;
 
         /// <summary>
         /// Esegue la stampa a schermo di tutte le 
         /// </summary>
         /// <param name="basePath"></param>
-        public void ListAllFilesWithProvidedExtension(
-            string basePath, string searchExtension, string secondExtension = null)
+        public void ListAllFilesWithProvidedExtension(string basePath, string[] searchExtensions)
         {
             //Validazione degli input
             if (string.IsNullOrEmpty(basePath))
                 throw new ArgumentNullException(nameof(basePath));
-            if (string.IsNullOrEmpty(searchExtension))
-                throw new ArgumentNullException(nameof(searchExtension));
+            if (searchExtensions == null)
+                throw new ArgumentNullException(nameof(searchExtensions));
 
+            //Istanza delle info della directory
             DirectoryInfo dirInfo = new DirectoryInfo(basePath);
 
-            //1) Elenco tutti i files presenti nella cartella "basePath"
-            ConsoleUtils.WriteColorLine(ConsoleColor.Yellow, $"Ricerca in folder '{dirInfo.FullName}'...");
+            //Se è gestito l'evento di segnalazione inizio ricerca in una directory
+            SearchInDirectoryStarted?.Invoke(this, dirInfo);
+
+            //Ricerca dei files nella directory
             IEnumerable<FileInfo> filesInCartella = dirInfo.EnumerateFiles();
 
             //1-BIS) Enumero tutti i files nella cartella
@@ -44,29 +45,21 @@ namespace Galaxy.Terminal.Structures
                 //Taglio la parte successiva al punto
                 string currentFileExtension = currentFileInfo.Name.Substring(dotIndex + 1);
 
-                //Se l'estensione è uguale a quella specificata, stampo
-                if (currentFileExtension == searchExtension)
+                //Iterazione su tutte le estensioni ricercate
+                foreach (var currentSearchedExtension in searchExtensions) 
                 {
-                    //3) Stampo a video (Console.WriteLine(...)) i percorso del file 
-                    //con l'estensione desiderata
-                    ConsoleUtils.WriteColorLine(ConsoleColor.Green, $" => {currentFileInfo.FullName}");
-                }
-                else
-                {
-                    //Se è gestito la seconda estensione di ricerca
-                    if (secondExtension != null)
-                    {
-                        //Se il file corrisponde alla ricerca
-                        if (currentFileExtension == secondExtension)
-                        {
-                            //Se l'evento è gestito
-                            if (FileWithSecondExtensionFound != null) 
-                            {
-                                //Sollevo l'evento passando i fileInfo trovato
-                                FileWithSecondExtensionFound(this, currentFileInfo);
-                            }                            
-                        }
-                    }
+                    //Se non è quella ricercata, continuo
+                    if (currentFileExtension != currentSearchedExtension)
+                        continue;
+
+                    //Se arrivo qui, è una estensione cercata
+
+                    //Se l'evento non è gestito, esco
+                    if (FileWithSecondExtensionFound == null)
+                        continue;
+
+                    //Sollevo l'evento passando i fileInfo trovato
+                    FileWithSecondExtensionFound(this, currentFileInfo);
                 }
             }
 
@@ -77,11 +70,11 @@ namespace Galaxy.Terminal.Structures
             foreach (DirectoryInfo currentSubDirectory in subDirsInFolder)
             {
                 //Applico la funzione ricorsivamente
-                ListAllFilesWithProvidedExtension(currentSubDirectory.FullName, searchExtension, secondExtension);
+                ListAllFilesWithProvidedExtension(
+                    currentSubDirectory.FullName, searchExtensions);
             }
 
             //6) Fine
         }
-
     }
 }

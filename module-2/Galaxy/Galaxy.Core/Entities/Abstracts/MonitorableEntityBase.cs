@@ -1,11 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Galaxy.Core.Entities.Interfaces;
+using System;
 
 namespace Galaxy.Core.Entities
 {
-    public abstract class EntitaMonitorabile
+    /// <summary>
+    /// Classe astratta per tutte le entità monitorabili
+    /// </summary>
+    public abstract class MonitorableEntityBase: IEntity, IMonitorableEntity
     {
+        /// <summary>
+        /// Id primario
+        /// </summary>
         public int Id { get; set; }
 
         /// <summary>

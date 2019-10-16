@@ -1,8 +1,8 @@
 ﻿using Galaxy.Core.BusinessLayers;
+using Galaxy.Core.BusinessLayers.Common;
+using Galaxy.Core.BusinessLayers.JsonProvider;
 using Galaxy.Core.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Galaxy.Terminal.Procedures
 {
@@ -14,7 +14,8 @@ namespace Galaxy.Terminal.Procedures
             Console.WriteLine();
             Console.WriteLine("ESECUZIONE DEL WORKFLOW LIBRI...");
             Console.WriteLine();
-            LibroManager manager = new LibroManager();
+            //TxtFileLibroManager manager = new TxtFileLibroManager();
+            IManager<Libro> manager = new JsonLibroManager();
 
             //Visualizzazione contenuto database
             Console.WriteLine("Lettura del database...");
@@ -43,6 +44,24 @@ namespace Galaxy.Terminal.Procedures
             Console.WriteLine("Il libro dovrebbe essere stato creato su disco!");
             Console.WriteLine();
 
+            //Creazione di un nuovo libro => "C" di CRUD
+            Console.WriteLine("Creazione di un altro libro...");
+            var nuovoLibro2 = new Libro
+            {
+                Titolo = "Secondo titolo" + randomGenerator.Next(),
+                Anno = 2019,
+                Autore = "JR Tolkien",
+                Codice = "DCG",
+                Lingua = "Italiano",
+                Prezzo = 16,
+                Timestamp = DateTime.Now,
+                UtenteCreatore = "mario.rossi",
+                GenereAppartenenza = new Genere { Id = 1 }
+            };
+            manager.Crea(nuovoLibro2);
+            Console.WriteLine("Il libro dovrebbe essere stato creato su disco!");
+            Console.WriteLine();
+
             //Leggiamo i libri dal disco => "R" di CRUD
             Console.WriteLine("Lettura del database...");
             libriInArchivio = manager.Carica();
@@ -67,13 +86,14 @@ namespace Galaxy.Terminal.Procedures
                 Console.WriteLine($"Lettura: {currentLibro.Titolo} (ID:{currentLibro.Id})");
             Console.WriteLine("");
 
-            //Cerchiamo un libro con "esempio" nel titolo
-            Console.WriteLine("Caricamento dei soli libri con 'esempio' nel titolo...");
-            libriInArchivio = manager.Carica("esempio");
-            Console.WriteLine($"Trovati {libriInArchivio.Count} libri in archivio con 'esempio'...");
-            foreach (var currentLibro in libriInArchivio)
-                Console.WriteLine($"Lettura: {currentLibro.Titolo} (ID:{currentLibro.Id})");
-            Console.WriteLine("");
+            //*** COMMENTATO FINCHE' NON FACCIAMO ILibroManager
+            ////Cerchiamo un libro con "esempio" nel titolo
+            //Console.WriteLine("Caricamento dei soli libri con 'esempio' nel titolo...");
+            //libriInArchivio = manager.Carica("esempio");
+            //Console.WriteLine($"Trovati {libriInArchivio.Count} libri in archivio con 'esempio'...");
+            //foreach (var currentLibro in libriInArchivio)
+            //    Console.WriteLine($"Lettura: {currentLibro.Titolo} (ID:{currentLibro.Id})");
+            //Console.WriteLine("");
 
             //Cancellazione del genere => "D" di CRUD
             Console.WriteLine("Cancellazione di un libro esistente...");

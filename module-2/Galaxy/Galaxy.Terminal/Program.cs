@@ -1,9 +1,6 @@
-﻿using Galaxy.Core.BusinessLayers;
-using Galaxy.Core.Entities;
-using Galaxy.Terminal.Procedures;
+﻿using Galaxy.Terminal.Procedures;
 using Galaxy.Terminal.Utils;
 using System;
-using System.Collections.Generic;
 
 namespace Galaxy.Terminal
 {

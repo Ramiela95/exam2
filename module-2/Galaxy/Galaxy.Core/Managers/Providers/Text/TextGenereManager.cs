@@ -1,14 +1,10 @@
 ﻿using Galaxy.Core.BusinessLayers.Common;
-using Galaxy.Core.BusinessLayers.Utils;
 using Galaxy.Core.Entities;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace Galaxy.Core.BusinessLayers
 {
-    public class GenereManager: ManagerBase<Genere>
+    public class TextGenereManager: TextManagerBase<Genere>
     {
         const string NomeFileDatabaseGeneri = "generi.txt";
 

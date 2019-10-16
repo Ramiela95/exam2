@@ -1,0 +1,12 @@
+[
+    {
+        "Id": 1,
+        "Nome": "Fantasy",
+        "Descrizione": "lorem ipsum, eccetera"
+    },
+    {        
+        "Nome": "Saggistica",
+        "Descrizione": "lorem ipsum, eccetera",
+        "Id": 2
+    }
+]

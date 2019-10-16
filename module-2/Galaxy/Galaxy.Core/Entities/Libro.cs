@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace Galaxy.Core.Entities
+﻿namespace Galaxy.Core.Entities
 {
     /// <summary>
     /// Entità libro venduto
     /// </summary>
-    public class Libro: EntitaMonitorabile
+    public class Libro: MonitorableEntityBase
     {        
         /// <summary>
         /// Codice del libro (es. ISBN)

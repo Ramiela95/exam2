@@ -1,11 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Galaxy.Core.Entities.Interfaces;
 
 namespace Galaxy.Core.Entities
 {
-    class Utente
+    /// <summary>
+    /// Entità utente
+    /// </summary>
+    public class Utente: IEntity
     {
+        /// <summary>
+        /// Id primario
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Username
+        /// </summary>
+        public string UserName { get; set; }
+
         //1) Definire classe Utente con campi "Username" (string), 
         //"Nome" (string), "Cognome" (string) e "IsAbilitato" (bool)
 

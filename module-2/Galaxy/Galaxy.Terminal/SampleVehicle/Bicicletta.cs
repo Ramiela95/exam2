@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Galaxy.Core.Entities
+﻿namespace Galaxy.Terminal.SampleVehicle
 {
     public class Bicicletta: Veicolo
     {

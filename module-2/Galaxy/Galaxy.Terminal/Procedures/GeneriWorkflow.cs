@@ -1,8 +1,7 @@
-﻿using Galaxy.Core.BusinessLayers;
+﻿using Galaxy.Core.BusinessLayers.Common;
+using Galaxy.Core.BusinessLayers.JsonProvider;
 using Galaxy.Core.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Galaxy.Terminal.Procedures
 {
@@ -14,7 +13,8 @@ namespace Galaxy.Terminal.Procedures
             Console.WriteLine();
             Console.WriteLine("ESECUZIONE DEL WORKFLOW GENERI...");
             Console.WriteLine();
-            GenereManager manager = new GenereManager();
+            //IManager<Genere> manager = new TxtFileGenereManager();
+            IManager<Genere> manager = new JsonGenereManager();
 
             //Visualizzazione contenuto database
             Console.WriteLine("Lettura del database...");

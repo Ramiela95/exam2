@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Galaxy.Core.BusinessLayers
 {
-    public class LibroManager: ManagerBase<Libro>
+    public class TextLibroManager: TextManagerBase<Libro>
     {
         const string NomeFileDatabaseLibri = "libri.txt";
 
@@ -83,11 +83,11 @@ namespace Galaxy.Core.BusinessLayers
             // => entityDestinazione.UtenteCreatore = entitySorgente.UtenteCreatore;
         }
 
-        public List<Libro> Carica(string testoDaCercareNelTitolo)
+        public IList<Libro> Carica(string testoDaCercareNelTitolo)
         {
             //Uso il metodo base per ottenere tutti i libri
-            List<Libro> tuttiILibri = base.Carica();
-            List<Libro> libriCorrispondentiAlCriterioDiRicerca = new List<Libro>();
+            IList<Libro> tuttiILibri = base.Carica();
+            IList<Libro> libriCorrispondentiAlCriterioDiRicerca = new List<Libro>();
 
             //Scorro tutti i libri
             foreach (Libro currentLibro in tuttiILibri) 

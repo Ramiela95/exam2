@@ -3,12 +3,12 @@ using Galaxy.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Linq;
 
 namespace Galaxy.Core.BusinessLayers.Common
 {
-    public abstract class ManagerBase<TEntity>
-        where TEntity: EntitaMonitorabile
+    public abstract class TextManagerBase<TEntity>: IManager<TEntity>
+        where TEntity: MonitorableEntityBase
     {
         protected abstract string GetNomeFileDatabase();
 
@@ -32,7 +32,7 @@ namespace Galaxy.Core.BusinessLayers.Common
             //Contiamo quanti record ci sono nel database esistente
             //(ci serve per sapere quale "Id" dare al nuovo elemento
             //=> Carico tutti gli elementi in archivio
-            List<TEntity> tutti = Carica();
+            IList<TEntity> tutti = Carica();
             var count = tutti.Count;
 
             //Prossimo "Id" => count + 1
@@ -46,9 +46,14 @@ namespace Galaxy.Core.BusinessLayers.Common
 
             string genereStringa = ConvertiEntityInStringa(entityDaCreare);
 
+            AddDataToStorage(genereStringa);
+        }
+
+        private void AddDataToStorage(string entityContent) 
+        {
             //Aggiungi stringa a file database
             var dbFileName = GetNomeFileDatabase();
-            DatabaseUtils.AppendiStringaADatabase(genereStringa, dbFileName);
+            DatabaseUtils.AppendiStringaADatabase(entityContent, dbFileName);
         }
 
         public void Aggiorna(TEntity entityDaModificare)
@@ -63,7 +68,7 @@ namespace Galaxy.Core.BusinessLayers.Common
                     $"non ha il campo 'Id' valorizzato! Prima crearlo!");
 
             //Carico tutti in memoria
-            List<TEntity> tuttiIDati = Carica();
+            IList<TEntity> tuttiIDati = Carica();
 
             //Scorro elenco generi esistenti
             foreach (var currentGenereInDatabase in tuttiIDati)
@@ -121,7 +126,7 @@ namespace Galaxy.Core.BusinessLayers.Common
             Salva(tutti);
         }
 
-        public List<TEntity> Carica() 
+        public IList<TEntity> Carica() 
         {
             //Recupero tutte le righe
             var dbFileName = GetNomeFileDatabase();
@@ -129,7 +134,7 @@ namespace Galaxy.Core.BusinessLayers.Common
                 .LeggiRigheDaDatabase(dbFileName);
 
             //Predisposizione lista di uscita
-            List<TEntity> listaUscita = new List<TEntity>();
+            IList<TEntity> listaUscita = new List<TEntity>();
 
             //Itero su tutte le righe
             foreach (string currentRiga in righeInDatabase)
@@ -158,10 +163,10 @@ namespace Galaxy.Core.BusinessLayers.Common
             return listaUscita;
         }
 
-        private void Salva(List<TEntity> tutteLeEntityDaSalvare)
+        private void Salva(IList<TEntity> tutteLeEntityDaSalvare)
         {
             //Definizione della lista di stringhe
-            List<string> stringhe = new List<string>();
+            IList<string> stringhe = new List<string>();
 
             //Scorro tutte le entità passate come parametro
             foreach (var currentEntity in tutteLeEntityDaSalvare)

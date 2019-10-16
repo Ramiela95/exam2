@@ -1,9 +1,7 @@
 ﻿using Galaxy.Terminal.Structures;
 using Galaxy.Terminal.Utils;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Galaxy.Terminal.Procedures
 {
@@ -53,15 +51,34 @@ namespace Galaxy.Terminal.Procedures
             // - dopo il "+=" c'è il DELEGATO
             handler.FileWithSecondExtensionFound += Handler_FileWithSecondExtensionFound;
 
+            //Evento di inizio ricerca in directory
+            handler.SearchInDirectoryStarted += Handler_SearchInDirectoryStarted;
+
             //Avvio la procedura sul percorso base
             handler.ListAllFilesWithProvidedExtension(
-                basePath, extension, secondExtension);
+                basePath, new string[] { extension, secondExtension });
+        }
+
+        private static void Handler_SearchInDirectoryStarted(object sender, DirectoryInfo e)
+        {
+            //1) Elenco tutti i files presenti nella cartella "basePath"
+            ConsoleUtils.WriteColorLine(ConsoleColor.Yellow, 
+                $"Ricerca in folder '{e.FullName}'...");
         }
 
         private static void Handler_FileWithSecondExtensionFound(object sender, FileInfo e)
         {
-            //Apro il file di testo, aggiungo il percorso
-            File.AppendAllLines("E:\\prova.txt", new string[] { e.FullName });
+            //Se l'estensione del file è "cs", stampo a console
+            if (e.Extension == ".cs")
+            {
+                //Scrittura a console in verde
+                ConsoleUtils.WriteColorLine(ConsoleColor.Green, $" => {e.Name}");
+            }
+            else 
+            {
+                //Apro il file di testo, aggiungo il percorso
+                File.AppendAllLines("E:\\prova.txt", new string[] { e.FullName });
+            }
         }
     }
 }
