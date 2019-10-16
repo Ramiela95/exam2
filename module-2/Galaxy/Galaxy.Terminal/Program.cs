@@ -17,7 +17,9 @@ namespace Galaxy.Terminal
             Console.WriteLine("*******************************");
             Console.WriteLine("* 1 - Esegui CRUD Genere");
             Console.WriteLine("* 2 - Esegui CRUD Libro");
-            var selezione = ConsoleUtils.LeggiNumeroInteroDaConsole(1, 2);
+            Console.WriteLine("* 3 - Esegui CRUD Utenti");
+            Console.WriteLine("* 4 - Procedure ricorsive");
+            var selezione = ConsoleUtils.LeggiNumeroInteroDaConsole(1, 4);
 
             //Selezione dell'opzione
             switch (selezione) 
@@ -27,6 +29,9 @@ namespace Galaxy.Terminal
                     break;
                 case 2:
                     LibriWorkflow.EseguiCreaModificaCancella();
+                    break;
+                case 4:
+                    RecursiveProcedures.Summary();
                     break;
                 default:
                     Console.WriteLine("Opzione non valida!");

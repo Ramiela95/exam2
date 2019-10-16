@@ -67,5 +67,20 @@ namespace Galaxy.Terminal.Utils
             Console.Write("Premi un pulsante per uscire");
             Console.ReadKey();
         }
+
+        public static void WriteColorLine(ConsoleColor color, string message) 
+        {
+            //Salvo il vecchio colore (quello di default)
+            var vecchioColore = Console.ForegroundColor;
+
+            //Impostiamo il nuovo colore della console per la scrittura
+            Console.ForegroundColor = color;
+
+            //Scriviamo nella console
+            Console.WriteLine(message);
+
+            //Reimpostiamo il vecchio colore
+            Console.ForegroundColor = vecchioColore;
+        }
     }
 }
