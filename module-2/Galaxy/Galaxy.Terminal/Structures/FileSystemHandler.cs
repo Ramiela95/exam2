@@ -10,6 +10,18 @@ namespace Galaxy.Terminal.Structures
 
         public event EventHandler<DirectoryInfo> SearchInDirectoryStarted;
 
+        private string[] _randomData;
+
+        public FileSystemHandler()
+        {
+            _randomData = new string[] { "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas arcu elit, gravida aliquet auctor efficitur, porttitor a sapien. Vivamus bibendum velit orci, non cursus lacus ullamcorper in. Quisque scelerisque pellentesque ipsum, ut faucibus mauris ornare vitae. In cursus ipsum et dignissim ornare. Curabitur id metus sed tortor dignissim tempus. Duis nec libero justo. Praesent purus lacus, semper eu maximus a, accumsan non lectus. Vestibulum efficitur tellus tellus, eget molestie justo venenatis in. Vestibulum vulputate nisi eget venenatis ullamcorper. Praesent metus sapien, rhoncus in risus et, eleifend rhoncus dui. Integer cursus, elit non dapibus porta, dui metus bibendum neque, sit amet congue lacus ex et risus. In hac habitasse platea dictumst. In nec accumsan nulla." };
+        }
+
+        ~FileSystemHandler() 
+        {
+            _randomData = null;
+        }
+
         /// <summary>
         /// Esegue la stampa a schermo di tutte le 
         /// </summary>

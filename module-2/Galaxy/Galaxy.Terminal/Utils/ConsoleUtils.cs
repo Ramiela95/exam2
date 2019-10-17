@@ -60,6 +60,59 @@ namespace Galaxy.Terminal.Utils
             return valoreIntero;
         }
 
+        /// <summary>
+        /// Esegue la lettura di standard input (console)
+        /// di un valore e tenta di eseguire la conversione
+        /// nel tipo specificato come generico
+        /// </summary>
+        /// <typeparam name="TOutput">Tipo a cui convertire</typeparam>
+        /// <returns>Ritorna il valore convertito</returns>
+        public static TOutput ReadLine<TOutput>(Func<TOutput, bool> acceptanceCondition)
+        {
+            //Predisposizione valori            
+            TOutput valoreConvertito = default(TOutput);
+            bool isValidCast = false;
+            bool isAccepted = false;
+
+            while (!isValidCast || !isAccepted) 
+            {
+                //Try perchè il cast potrebbe fallire
+                try
+                {
+                    //Lettura da console
+                    string valueFromConsole = Console.ReadLine();
+
+                    //Tento il casting forzato
+                    valoreConvertito = (TOutput)Convert
+                        .ChangeType(valueFromConsole, typeof(TOutput));
+
+                    //Il cast è andato bene
+                    isValidCast = true;
+
+                    //Verifico la condizione di accettazione
+                    isAccepted = acceptanceCondition(valoreConvertito);
+
+                    //La condizione è stata accetta o meno
+                    if (!isAccepted) 
+                    {
+                        //Mostro un messaggio utente con l'errore di parsing
+                        WriteColorLine(ConsoleColor.Yellow, "Condizione non valida. Riprova: ");
+                    }
+                }
+                catch (Exception exc)
+                {
+                    //Mostro un messaggio utente con l'errore di parsing
+                    WriteColorLine(ConsoleColor.Yellow, "Selezione non valida. Riprova: ");
+
+                    //Il cast non è valido
+                    isValidCast = false;
+                }
+            }
+
+            //Se arrivo qui, il casting ok, ed esco
+            return valoreConvertito;
+        }
+
         public static void ConfermaUscita()
         {
             Console.Write("Premi un pulsante per uscire");
@@ -68,14 +121,29 @@ namespace Galaxy.Terminal.Utils
 
         public static void WriteColorLine(ConsoleColor color, string message) 
         {
+            WriteColorBase(color, message,
+                s => Console.WriteLine(s)
+            );
+        }
+
+        public static void WriteColor(ConsoleColor color, string message)
+        {
+            WriteColorBase(color, message,
+                s => Console.Write(s)
+            );
+        }
+
+        private static void WriteColorBase(ConsoleColor color, string message,
+            Action<string> actionToExecute)
+        {
             //Salvo il vecchio colore (quello di default)
             var vecchioColore = Console.ForegroundColor;
 
             //Impostiamo il nuovo colore della console per la scrittura
             Console.ForegroundColor = color;
 
-            //Scriviamo nella console
-            Console.WriteLine(message);
+            //Lanciamo la funzione delegata (Lambda Expression)
+            actionToExecute(message);
 
             //Reimpostiamo il vecchio colore
             Console.ForegroundColor = vecchioColore;

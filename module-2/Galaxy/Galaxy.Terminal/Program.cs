@@ -16,7 +16,8 @@ namespace Galaxy.Terminal
             Console.WriteLine("* 2 - Esegui CRUD Libro");
             Console.WriteLine("* 3 - Esegui CRUD Utenti");
             Console.WriteLine("* 4 - Procedure ricorsive");
-            var selezione = ConsoleUtils.LeggiNumeroInteroDaConsole(1, 4);
+            Console.WriteLine("* 5 - Business Layer Menu");
+            var selezione = ConsoleUtils.LeggiNumeroInteroDaConsole(1, 5);
 
             //Selezione dell'opzione
             switch (selezione) 
@@ -29,6 +30,9 @@ namespace Galaxy.Terminal
                     break;
                 case 4:
                     RecursiveProcedures.Summary();
+                    break;
+                case 5:
+                    LaunchBusinessLayerMenu.Summary();
                     break;
                 default:
                     Console.WriteLine("Opzione non valida!");
