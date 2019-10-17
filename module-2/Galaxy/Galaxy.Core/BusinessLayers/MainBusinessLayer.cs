@@ -1,5 +1,4 @@
 ﻿using Galaxy.Core.BusinessLayers.Common;
-using Galaxy.Core.BusinessLayers.JsonProvider;
 using Galaxy.Core.Entities;
 using Galaxy.Core.Managers.Providers.Enum;
 using System;
@@ -17,22 +16,10 @@ namespace Galaxy.Core.BusinessLayers
         private IManager<Genere> _GenereManager;
         private IManager<Libro> _LibroManager;
 
-        public MainBusinessLayer(StorageType storageType) 
+        public MainBusinessLayer(IManager<Genere> genereMan, IManager<Libro> libroMan) 
         {
-            //Switch sul tipo di storage
-            switch (storageType) 
-            {
-                case StorageType.Json:
-                    _GenereManager = new JsonGenereManager();
-                    _LibroManager = new JsonLibroManager();
-                    break;
-                case StorageType.Text:
-                    _GenereManager = new TextGenereManager();
-                    _LibroManager = new TextLibroManager();
-                    break;
-                default:
-                    throw new NotSupportedException($"Il provider {storageType} non è supportato");
-            }
+            _GenereManager = genereMan;
+            _LibroManager = libroMan;
         }
 
         public string[] CreaLibroESuoGenereSeNonEsiste(

@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Galaxy.Core\Galaxy.Core.csproj" />
+    <ProjectReference Include="..\Galaxy.Storage.Json\Galaxy.Storage.Json.csproj" />
+    <ProjectReference Include="..\Galaxy.Storage.Text\Galaxy.Storage.Text.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,7 @@
 ﻿using Galaxy.Core.BusinessLayers;
+using Galaxy.Core.BusinessLayers.Common;
+using Galaxy.Core.BusinessLayers.JsonProvider;
+using Galaxy.Core.Entities;
 using Galaxy.Core.Managers.Providers.Enum;
 using Galaxy.Terminal.Utils;
 using System;
@@ -56,11 +59,27 @@ namespace Galaxy.Terminal.Procedures
             ConsoleUtils.WriteColor(ConsoleColor.Yellow, "Genere:");
             string genere = ConsoleUtils.ReadLine<string>(t => !string.IsNullOrEmpty(t));
 
-            
+            IManager<Libro> libroManager;
+            IManager<Genere> genereManager;
+
+            //Switch sul tipo di storage
+            switch (storageType)
+            {
+                case StorageType.Json:
+                    genereManager = new JsonGenereManager();
+                    libroManager = new JsonLibroManager();
+                    break;
+                case StorageType.Text:
+                    genereManager = new TextGenereManager();
+                    libroManager = new TextLibroManager();
+                    break;
+                default:
+                    throw new NotSupportedException($"Il provider {storageType} non è supportato");
+            }
 
             //Istanzio il business layer (che il cervello della 
             //nostra applicazione)
-            MainBusinessLayer layer = new MainBusinessLayer(storageType);
+            MainBusinessLayer layer = new MainBusinessLayer(genereManager, libroManager);
 
             //Avvio la funzione di creazione
             string[] messaggiDiErrore = layer.CreaLibroESuoGenereSeNonEsiste(

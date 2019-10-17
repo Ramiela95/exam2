@@ -16,10 +16,11 @@ namespace Galaxy.Terminal.Procedures
             Console.WriteLine("******************************");
             Console.WriteLine("* 1 - Demo ricorsione");
             Console.WriteLine("* 2 - Demo Memory leak");
-            Console.WriteLine("* 2 - Demo matrice");
+            Console.WriteLine("* 3 - Demo matrice");
+            Console.WriteLine("* 4 - Demo dizionario");
 
             //Recupero della selezione
-            var selezione = ConsoleUtils.LeggiNumeroInteroDaConsole(1, 3);
+            var selezione = ConsoleUtils.LeggiNumeroInteroDaConsole(1, 4);
 
             //Avvio della procedura
             switch (selezione) 
@@ -40,10 +41,28 @@ namespace Galaxy.Terminal.Procedures
                     break;
 
                 //********************************************************
+                case 4:
+                    DemoDizionario();
+                    break;
+
+                //********************************************************
                 default:
                     Console.WriteLine("Selezione non valida");
                     break;
             }
+        }
+
+        private static void DemoDizionario() 
+        {
+            IDictionary<string, int> dizionario = new Dictionary<string, int>();
+            dizionario.Add("Uno", 1);
+            dizionario.Add("Due", 2);
+            dizionario.Add("Tre", 3);
+            //dizionario.Add("Tre", 4); => ERRORE (chiave già esistente!)
+
+            int uno = dizionario["Uno"];
+            int due = dizionario["Due"];
+            int tre = dizionario["Tre"];
         }
 
         private static void DemoMatrice() 
@@ -53,16 +72,26 @@ namespace Galaxy.Terminal.Procedures
             arrayDiInteri[1] = 22;
             arrayDiInteri[2] = 11;
 
-            //int[][] matriceDiInteri = new int[3][][][];
+            int[][] matriceDiInteri = new int[3][];
+            matriceDiInteri[0] = new int[8];
+            matriceDiInteri[1] = new int[5];
+            matriceDiInteri[2] = new int[3];
+
+            matriceDiInteri[0][0] = 12;
+            matriceDiInteri[0][1] = 100;
+            matriceDiInteri[0][2] = 5000;
+            matriceDiInteri[0][0] = 17;
+            matriceDiInteri[0][1] = 90;
+            matriceDiInteri[0][2] = 4000;
+
+            int[,] matriceTridimensionale = new int[2, 2];
+            matriceTridimensionale[0, 0] = 0; 
+            matriceTridimensionale[0, 1] = 1;
+            matriceTridimensionale[1, 0] = 2;
+            matriceTridimensionale[1, 1] = 2;
+            /// ==> matriceTridimensionale[3, 0] = 2; //ERRORE
 
             DatiAutomobile[] arrayDiDatiAuto = new DatiAutomobile[2];
-
-            //arrayDiDatiAuto[0][0]= 12;
-            //arrayDiDatiAuto[0][1] = 100;
-            //arrayDiDatiAuto[0][2] = 5000;
-            //arrayDiDatiAuto[0][0] = 17;
-            //arrayDiDatiAuto[0][1] = 90;
-            //arrayDiDatiAuto[0][2] = 4000;
 
             //arrayDiDatiAuto[0].Speed = 12;
             //arrayDiDatiAuto[0].HorsePower = 100;
@@ -70,8 +99,6 @@ namespace Galaxy.Terminal.Procedures
             //arrayDiDatiAuto[1].Speed = 17;
             //arrayDiDatiAuto[1].HorsePower = 90;
             //arrayDiDatiAuto[1].EngineRotation = 5400;
-
-
         }
 
         private class DatiAutomobile 
