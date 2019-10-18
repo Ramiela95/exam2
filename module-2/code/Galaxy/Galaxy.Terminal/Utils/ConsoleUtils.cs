@@ -74,6 +74,8 @@ namespace Galaxy.Terminal.Utils
             bool isValidCast = false;
             bool isAccepted = false;
 
+            //Se il valore NON è stato correttamente covertito OPPURE
+            //la condizione NON è stata accettata, eseguo il ciclo
             while (!isValidCast || !isAccepted) 
             {
                 //Try perchè il cast potrebbe fallire

@@ -1,10 +1,8 @@
 ﻿using Galaxy.Core.BusinessLayers.Common;
 using Galaxy.Core.Entities;
-using Galaxy.Core.Managers.Providers.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Galaxy.Core.BusinessLayers
 {
@@ -13,15 +11,34 @@ namespace Galaxy.Core.BusinessLayers
     /// </summary>
     public class MainBusinessLayer
     {
+        #region Private fields
         private IManager<Genere> _GenereManager;
         private IManager<Libro> _LibroManager;
+        #endregion
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="genereMan">Istanza Genere manager</param>
+        /// <param name="libroMan">Istanza Libro manager</param>
         public MainBusinessLayer(IManager<Genere> genereMan, IManager<Libro> libroMan) 
         {
             _GenereManager = genereMan;
             _LibroManager = libroMan;
         }
 
+        /// <summary>
+        /// Esegue la creazione di un libro usando le informazioni
+        /// passate (e validandole) e del genere associato se
+        /// il genere non è già presente nel sistema
+        /// </summary>
+        /// <param name="titolo">Titolo del libro</param>
+        /// <param name="codice">Codice del libro</param>
+        /// <param name="autore">Autore</param>
+        /// <param name="prezzo">Prezzo (maggiore di 0)</param>
+        /// <param name="anno">Anno (1000-now)</param>
+        /// <param name="nomeGenere">Nome del genere</param>
+        /// <returns>Ritorna una lista di validazioni fallite</returns>
         public string[] CreaLibroESuoGenereSeNonEsiste(
             string titolo, string codice, string autore, 
             double prezzo, int anno, string nomeGenere)
@@ -93,6 +110,11 @@ namespace Galaxy.Core.BusinessLayers
             return messaggi.ToArray();
         }
 
+        /// <summary>
+        /// Esegue la creazione di un genere con il nome indicato
+        /// </summary>
+        /// <param name="nomeGenere">Nome del genere</param>
+        /// <returns>Ritorna il genere creato</returns>
         private Genere CreateGenereWithName(string nomeGenere)
         {
             //Creo oggetto genere con nome
@@ -110,6 +132,11 @@ namespace Galaxy.Core.BusinessLayers
             return nuovoGenere;
         }
 
+        /// <summary>
+        /// Recupera un libro usando il codice
+        /// </summary>
+        /// <param name="codice">Codice del libro</param>
+        /// <returns>Ritorna il libro o null</returns>
         public Libro GetLibroByCodice(string codice)
         {
             //4-2) Carico tutti i libri
@@ -121,6 +148,11 @@ namespace Galaxy.Core.BusinessLayers
             return libroConStessoCodice;
         }
 
+        /// <summary>
+        /// Recupera un genere usando il nome
+        /// </summary>
+        /// <param name="nome">Nome del genere</param>
+        /// <returns>Ritorna un genere o null</returns>
         public Genere GetGenereByNome(string nome)
         {
             //4-2) Carico tutti i generi
@@ -132,8 +164,12 @@ namespace Galaxy.Core.BusinessLayers
             return genereConNomeIndicato;
         }
 
+        /// <summary>
+        /// Distruttore (rilascia le risorse locali)
+        /// </summary>
         ~MainBusinessLayer() 
         {
+            //Rilascio delle risorse
             _GenereManager = null;
             _LibroManager = null;
         }
