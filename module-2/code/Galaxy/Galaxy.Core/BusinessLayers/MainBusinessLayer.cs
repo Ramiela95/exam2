@@ -1,5 +1,6 @@
 ﻿using Galaxy.Core.BusinessLayers.Common;
 using Galaxy.Core.Entities;
+using Galaxy.Terminal.SampleVehicle;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace Galaxy.Core.BusinessLayers
         #region Private fields
         private IManager<Genere> _GenereManager;
         private IManager<Libro> _LibroManager;
+        private IManager<Bicicletta> _BiciclettaManager;
         #endregion
 
         /// <summary>
@@ -21,10 +23,11 @@ namespace Galaxy.Core.BusinessLayers
         /// </summary>
         /// <param name="genereMan">Istanza Genere manager</param>
         /// <param name="libroMan">Istanza Libro manager</param>
-        public MainBusinessLayer(IManager<Genere> genereMan, IManager<Libro> libroMan) 
+        public MainBusinessLayer(IManager<Genere> genereMan, IManager<Libro> libroMan, IManager<Bicicletta> biciclettaMan) 
         {
             _GenereManager = genereMan;
             _LibroManager = libroMan;
+            _BiciclettaManager= biciclettaMan;
         }
 
         /// <summary>
@@ -40,71 +43,33 @@ namespace Galaxy.Core.BusinessLayers
         /// <param name="nomeGenere">Nome del genere</param>
         /// <returns>Ritorna una lista di validazioni fallite</returns>
         public string[] CreaLibroESuoGenereSeNonEsiste(
-            string titolo, string codice, string autore, 
-            double prezzo, int anno, string nomeGenere)
+            string modello, string marca, int numeroTelaio, 
+            bool isElettrica)
         {
             //1) Validazione degli input
-            if (string.IsNullOrEmpty(titolo))
-                throw new ArgumentNullException(nameof(titolo));
-            if (string.IsNullOrEmpty(codice))
-                throw new ArgumentNullException(nameof(codice));
-            if (string.IsNullOrEmpty(autore))
-                throw new ArgumentNullException(nameof(autore));
-            if (string.IsNullOrEmpty(nomeGenere))
-                throw new ArgumentNullException(nameof(nomeGenere));
-            if (prezzo <= 0)
-                throw new ArgumentOutOfRangeException(nameof(prezzo));
-            if (anno <= 0)
-                throw new ArgumentOutOfRangeException(nameof(anno));
+            if (string.IsNullOrEmpty(modello))
+                throw new ArgumentNullException(nameof(modello));
+            if (string.IsNullOrEmpty(marca))
+                throw new ArgumentNullException(nameof(marca));
+           
+            if (numeroTelaio <= 0)
+                throw new ArgumentOutOfRangeException(nameof(numeroTelaio));
+            
 
             //Predisposizione messaggi di uscita
             IList<string> messaggi = new List<string>();
 
-            //2)  Verifico che l'anno sia tra 1000 e oggi
-            if (anno < 1000 || anno > DateTime.Now.Year)
+         
+            Bicicletta nuovaBicicletta = new Bicicletta
             {
-                //Aggiungo il messaggio di errore, ed esco
-                messaggi.Add($"L'anno deve essere compreso tra 1000 e {DateTime.Now.Year}");
-                return messaggi.ToArray();
-            }
-
-            //3)  Verifico che il prezzo sia > 1
-            if (prezzo < 1)
-            {
-                //Aggiungo il messaggio di errore, ed esco
-                messaggi.Add($"Il prezzo deve essere almeno 1 euro");
-                return messaggi.ToArray();
-            }
-
-            //4) Verifico che il codice non sia già usato
-            Libro libroConStessoCodice = GetLibroByCodice(codice);
-            if (libroConStessoCodice != null)
-            {
-                //Aggiungo il messaggio di errore, ed esco
-                messaggi.Add($"Esiste già un libro con il " + 
-                    $"codice '{codice}' (ha l'id {libroConStessoCodice.Id})");
-                return messaggi.ToArray();
-            }
-
-            //5) Ricerco il genere in archivio
-            Genere existingGenere = 
-                GetGenereByNome(nomeGenere) 
-                ?? CreateGenereWithName(nomeGenere);
-
-            //7) Creo l'oggetto con tutti i dati
-            Libro nuovoLibro = new Libro
-            {
-                Titolo = titolo,
-                Autore = autore,
-                Codice = codice,
-                Anno = anno,
-                Prezzo = prezzo,
-                Lingua = "Italiano",
-                GenereAppartenenza = existingGenere
+                Modello = modello,
+                Marca = marca,
+                NumeroTelaio = numeroTelaio,
+                IsElettrica = isElettrica
             };
 
             //Aggiungo il libro
-            _LibroManager.Crea(nuovoLibro);
+            _BiciclettaManager.Crea(nuovaBicicletta);
 
             //8) Ritorno in uscita le validazioni (vuote se non ho errori)
             return messaggi.ToArray();
